@@ -4,16 +4,6 @@
   gather_facts: false
   
   tasks:
-    - name: Install openjdk
-      apt:
-      #  name: [ "default-jer", "apt-transport-https" ]
-        name: "{{ item }}"
-        state: present
-        update_cache: yes
-      with_items:
-        - default-jre
-        - apt-transport-https
-   
     - name: Add Apt signing key for elasticsearch
       apt_key:
         url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
@@ -25,8 +15,14 @@
         state: present
         filename: elastic-7
 
-    - name: Install elasticSearch and kibana
+    - name: Install openjdk, elasticSearch and kibana
       apt:
-        name: [ "elasticsearch", "kibana" ]
+      #  name: [ "default-jer", "apt-transport-https", "elasticsearch", "kibana" ]
+        name: "{{ item }}"
         state: present
         update_cache: yes
+      with_items:
+        - default-jre
+        - apt-transport-https
+        - elasticsearch
+        - kibana
