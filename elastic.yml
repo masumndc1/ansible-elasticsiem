@@ -1,0 +1,38 @@
+---
+- hosts: elasticSiem
+  become: yes
+  gather_facts: yes
+  vars:
+    ens33_ip: ansible_facts.ipv4.address
+
+  tasks: 
+    - name: Set node name in elaslic yml file.
+      lineinfile: 
+        path: /etc/elasticsearch/elasticsearch.yml
+        regexp: '^#node.name'
+        line: 'node.name: lxd-cluster'
+  
+    - name: Set port number in elaslic yml file.
+      lineinfile: 
+        path: /etc/elasticsearch/elasticsearch.yml
+        regexp: '#http.port'
+        line: 'http.port: 9200'
+
+    - name: Set cluster initial master nodes.
+      lineinfile: 
+        path: /etc/elasticsearch/elasticsearch.yml
+        regexp: '#cluster.initial_master_nodes'
+        line: 'cluster.initial_master_nodes: node-1'
+
+    - name: Set IP address siem listen to.
+      lineinfile: 
+        path: /etc/elasticsearch/elasticsearch.yml
+        regexp: '#network.host'
+        line: 'network.host: 192.168.35.178'
+
+    - name: Start elasticSearch service.
+      service:
+        name: elasticsearch
+        enabled: true
+        state: started
+    
