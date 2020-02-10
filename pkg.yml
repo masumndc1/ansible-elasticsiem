@@ -26,3 +26,5 @@
         - apt-transport-https
         - elasticsearch
         - kibana
+        - facter
+        - fish
