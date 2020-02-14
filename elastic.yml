@@ -9,28 +9,43 @@
         path: /etc/elasticsearch/elasticsearch.yml
         regexp: '^#node.name'
         line: 'node.name: {{ node_name }}'
+      notify:
+      - Restart elasticsearch
   
     - name: Set port number in elaslic yml file.
       lineinfile: 
         path: /etc/elasticsearch/elasticsearch.yml
         regexp: '#http.port'
         line: 'http.port: {{ elastic_port }}'
+      notify:
+      - Restart elasticsearch
 
     - name: Set cluster initial master nodes.
       lineinfile: 
         path: /etc/elasticsearch/elasticsearch.yml
         regexp: '#cluster.initial_master_nodes'
         line: 'cluster.initial_master_nodes: node-1'
+      notify:
+      - Restart elasticsearch
 
     - name: Set IP address siem listen to.
       lineinfile: 
         path: /etc/elasticsearch/elasticsearch.yml
         regexp: '#network.host'
         line: 'network.host: {{ node_ip }}'
+      notify:
+      - Restart elasticsearch
 
     - name: Start elasticSearch service.
       service:
         name: elasticsearch
         enabled: true
         state: started
+      notify:
+      - Restart elasticsearch
     
+  handlers:
+    - name: Restart elasticsearch
+      service:
+        name: elasticsearch
+        state: restarted
