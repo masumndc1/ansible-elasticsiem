@@ -1,3 +1,5 @@
 ---
 - import_playbook: pkg.yml
+- import_playbook: elastic.yml
+- import_playbook: kibana.yml
 
