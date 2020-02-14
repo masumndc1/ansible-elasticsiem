@@ -1,5 +1,5 @@
 ---
-ens33_ip: 192.168.35.178
+node_ip: 192.168.35.178
 kibana_port: 5601
 elastic_port: 9200
 node_name: lxd-cluster
