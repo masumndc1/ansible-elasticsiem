@@ -9,27 +9,41 @@
         path: /etc/kibana/kibana.yml
         regexp: '^#server.port'
         line: 'server.port: {{ kibana_port }}'
+      notify:
+      - Restart Kibana
   
     - name: Set server name.
       lineinfile: 
         path: /etc/kibana/kibana.yml
         regexp: '#server.name'
         line: 'server.name: {{ ansible_hostname }}'
+      notify:
+      - Restart Kibana
 
     - name: Set listening ip address.
       lineinfile: 
         path: /etc/kibana/kibana.yml
         regexp: '#server.host'
         line: 'server.host: {{ node_ip }}'
+      notify:
+      - Restart Kibana
 
     - name: Set url for kibana.
       lineinfile: 
         path: /etc/kibana/kibana.yml
         regexp: '#elasticsearch.hosts'
         line: 'elasticsearch.hosts: ["http://{{ node_ip }}:{{ elastic_port }}"]'
+      notify:
+      - Restart Kibana
 
     - name: Start Kibana service.
       service:
         name: kibana
         enabled: true
         state: started
+
+  handlers:
+    - name: Restart Kibana 
+      service:
+        name: kibana
+        state: restarted
