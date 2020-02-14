@@ -14,7 +14,7 @@
       lineinfile: 
         path: /etc/kibana/kibana.yml
         regexp: '#server.name'
-        line: '#server.name: {{ ansible_hostname }}'
+        line: 'server.name: {{ ansible_hostname }}'
 
     - name: Set listening ip address.
       lineinfile: 
@@ -26,7 +26,7 @@
       lineinfile: 
         path: /etc/kibana/kibana.yml
         regexp: '#elasticsearch.hosts'
-        line: '#elasticsearch.hosts: ["http://{{ node_ip }}:{{ elastic_port }}"]'
+        line: 'elasticsearch.hosts: ["http://{{ node_ip }}:{{ elastic_port }}"]'
 
     - name: Start Kibana service.
       service:
