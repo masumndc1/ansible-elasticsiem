@@ -1,4 +1,20 @@
 ---
+- name: set up kibana repo for Centos
+  template:
+    src: templates/kibana.repo.j2
+    dest: /etc/yum.repos.d/kibana.repo
+    owner: root
+    group: root
+    mode: '0644'
+  when: ansible_distribution == 'CentOS'
+
+- name: Install kibana pkgs in Centos
+  yum:
+    name: [ 'epel-release', 'kibana' ]
+    state: present
+    update_cache: true
+  when: ansible_distribution == 'CentOS'
+
 - name: Set server port in kibana file.
   lineinfile:
     path: /etc/kibana/kibana.yml
