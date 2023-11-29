@@ -1,2 +1,10 @@
 ---
-# handlers file for role1
+- name: Restart elasticsearch
+  service:
+    name: elasticsearch
+    state: restarted
+
+- name: Restart Kibana
+  service:
+    name: Kibana
+    state: restarted
