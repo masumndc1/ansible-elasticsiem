@@ -1,8 +1,5 @@
 ---
 # tasks file for role1
-- name: enable firewall in elastic node and kibana
-  include_tasks: firewall.yml
-
 - name: deploy elasticsearch node
   include_tasks: elasticsearch.yml
   when: ansible_facts['hostname'] == 'elasticsiem'
@@ -14,3 +11,6 @@
 - name: deploy filebeats and filebeats
   include_tasks: filebeats.yml
   include_tasks: suricata.yml
+
+- name: enable firewall in elastic node and kibana
+  include_tasks: firewall.yml
