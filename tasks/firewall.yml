@@ -1,0 +1,18 @@
+---
+- name: Enable 9200 port forwarding for elastic
+  firewalld:
+    port: 9200/tcp
+    zone: public
+    permanent: true
+    immediate: true
+    state: enabled
+  when: ansible_facts['hostname'] == 'elasticsiem'
+
+- name: Enable 5601 port forwarding for kibana
+  firewalld:
+    port: 5601/tcp
+    zone: public
+    permanent: true
+    immediate: true
+    state: enabled
+  when: ansible_facts['hostname'] == 'kibana'
