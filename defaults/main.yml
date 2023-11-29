@@ -1,2 +1,8 @@
 ---
-# defaults file for role1
+# defaults file for this role
+elastic_node_name: 'elasticsiem'
+elastic_port: '9200'
+elastic_node_ip: '10.91.203.62'
+kibana_node_name: 'kibana'
+kibana_port: '5601'
+kibana_node_ip: '10.91.203.16'
