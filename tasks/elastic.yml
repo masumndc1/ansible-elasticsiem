@@ -34,7 +34,7 @@
 
 - name: Install elasticsearch pkgs in Centos
   yum:
-    name: 'elasticsearch'
+    name: ['epel-release', 'firewalld', 'elasticsearch']
     state: present
     update_cache: true
   when: ansible_distribution == 'CentOS'

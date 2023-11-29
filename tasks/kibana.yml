@@ -10,7 +10,7 @@
 
 - name: Install kibana pkgs in Centos
   yum:
-    name: [ 'epel-release', 'kibana' ]
+    name: [ 'epel-release', 'firewalld', 'kibana' ]
     state: present
     update_cache: true
   when: ansible_distribution == 'CentOS'
