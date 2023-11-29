@@ -1,2 +1,13 @@
 ---
 # tasks file for role1
+- name: deploy elasticsearch node
+  include_tasks: elasticsearch.yml
+  when: ansible_facts['hostname'] == 'elasticsiem'
+
+- name: deploy kibana node
+  include_tasks: kibana.yml
+  when: ansible_facts['hostname'] == 'kibana'
+
+- name: deploy filebeats and filebeats
+  include_tasks: filebeats.yml
+  include_tasks: suricata.yml
