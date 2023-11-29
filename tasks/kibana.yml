@@ -1,49 +1,38 @@
 ---
-- hosts: elasticSiem
-  become: yes
-  gather_facts: yes
-
-  tasks: 
-    - name: Set server port in kibana file.
-      lineinfile: 
-        path: /etc/kibana/kibana.yml
-        regexp: '^#server.port'
-        line: 'server.port: {{ kibana_port }}'
-      notify:
-      - Restart Kibana
-  
+- name: Set server port in kibana file.
+  lineinfile:
+    path: /etc/kibana/kibana.yml
+    regexp: '^#server.port'
+    line: 'server.port: {{ kibana_port }}'
+  notify:
     - name: Set server name.
-      lineinfile: 
-        path: /etc/kibana/kibana.yml
-        regexp: '#server.name'
-        line: 'server.name: {{ ansible_hostname }}'
-      notify:
-      - Restart Kibana
 
-    - name: Set listening ip address.
-      lineinfile: 
-        path: /etc/kibana/kibana.yml
-        regexp: '#server.host'
-        line: 'server.host: {{ node_ip }}'
-      notify:
-      - Restart Kibana
+- name: Restart Kibana
+  lineinfile:
+    path: /etc/kibana/kibana.yml
+    regexp: '#server.name'
+    line: 'server.name: {{ kibana_node_name }}'
+  notify:
+    - Restart Kibana
 
-    - name: Set url for kibana.
-      lineinfile: 
-        path: /etc/kibana/kibana.yml
-        regexp: '#elasticsearch.hosts'
-        line: 'elasticsearch.hosts: ["http://{{ node_ip }}:{{ elastic_port }}"]'
-      notify:
-      - Restart Kibana
+- name: Set listening ip address.
+  lineinfile:
+    path: /etc/kibana/kibana.yml
+    regexp: '#server.host'
+    line: 'server.host: {{ kibana_node_ip }}'
+  notify:
+    - Restart Kibana
 
-    - name: Start Kibana service.
-      service:
-        name: kibana
-        enabled: true
-        state: started
+- name: Set url for kibana.
+  lineinfile:
+    path: /etc/kibana/kibana.yml
+    regexp: '#elasticsearch.hosts'
+    line: 'elasticsearch.hosts: ["http://{{ elastic_node_ip }}:{{ elastic_port }}"]'
+  notify:
+    - Restart Kibana
 
-  handlers:
-    - name: Restart Kibana 
-      service:
-        name: kibana
-        state: restarted
+- name: Start Kibana service.
+  service:
+    name: kibana
+    enabled: true
+    state: started
