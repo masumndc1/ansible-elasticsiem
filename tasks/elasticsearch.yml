@@ -52,6 +52,17 @@
     mode: '0644'
   when: ansible_distribution == 'CentOS'
 
+- name: Set memory settings for elasticsearch
+  template:
+    src: templates/custom.options.yml.j2
+    dest: /etc/elasticsearch/jvm.options.d/custom.options
+    owner: root
+    group: root
+    mode: '0644'
+  when: ansible_distribution == 'CentOS'
+  notify:
+    - Restart elasticsearch
+
 - name: Start elasticSearch service
   service:
     name: elasticsearch
