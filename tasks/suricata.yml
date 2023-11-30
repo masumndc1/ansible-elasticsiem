@@ -1,0 +1,13 @@
+---
+- name: Install suricata
+  yum:
+    name: 'suricata'
+    state: present
+    update_cache: yes
+  when: ansible_distribution == "CentOS"
+
+- name: Run suricata service
+  service:
+    name: 'suricata'
+    enabled: true
+    state: started
