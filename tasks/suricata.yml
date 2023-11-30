@@ -16,7 +16,7 @@
   lineinfile:
     path: /etc/suricata/suricata.yaml
     regex: 'community-id: false'
-    line: 'community-id: true'
+    line: '        community-id: true'
   notify:
     - Restart suricata
 
