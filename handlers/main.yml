@@ -13,3 +13,8 @@
   service:
     name: firewalld
     state: restarted
+
+- name: Restart suricata
+  service:
+    name: suricata
+    state: restarted
