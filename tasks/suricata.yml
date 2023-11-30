@@ -12,11 +12,19 @@
     enabled: true
     state: started
 
-- name: Set community-id to true
+- name: Place extra config file
+  template:
+    src: template/suricata_extra.yaml.j2
+    dest: /etc/suricata/suricata_extra.yaml
+    owner: suricata
+    group: suricata
+    mode: '0640'
+
+- name: Set extra config file in main suricata config
   lineinfile:
     path: /etc/suricata/suricata.yaml
-    regex: 'community-id: false'
-    line: '        community-id: true'
+    regex: '#include: include2.yaml'
+    line: 'include: suricata_extra.yaml'
   notify:
     - Restart suricata
 
