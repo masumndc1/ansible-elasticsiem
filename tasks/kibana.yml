@@ -1,54 +1,41 @@
 ---
-- name: set up kibana repo for Centos
+- name: Install firewall pkgs in Centos
+  yum:
+    name: [ 'epel-release', 'firewalld' ]
+    state: present
+    update_cache: true
+  when: ansible_distribution == 'CentOS'
+
+- name: Install gpg key for kibana
+  rpm_key:
+    state: present
+    key: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+  when: ansible_distribution == 'CentOS'
+
+- name: Install kibana pkgs in Centos
+  yum:
+    name: "{{ kibana_rpm_url }}"
+    state: present
+    update_cache: true
+  when: ansible_distribution == 'CentOS'
+
+- name: Place kibana config file
   template:
-    src: templates/kibana.repo.j2
-    dest: /etc/yum.repos.d/kibana.repo
+    src: templates/kibana.yml.j2
+    dest: /etc/kibana/kibana/yml
     owner: root
     group: root
     mode: '0644'
   when: ansible_distribution == 'CentOS'
 
-- name: Install kibana pkgs in Centos
-  yum:
-    name: [ 'epel-release', 'firewalld', 'kibana' ]
-    state: present
-    update_cache: true
-  when: ansible_distribution == 'CentOS'
-
-- name: Set server port in kibana file.
-  lineinfile:
-    path: /etc/kibana/kibana.yml
-    regexp: '^#server.port'
-    line: 'server.port: {{ kibana_port }}'
-  notify:
-    - name: Set server name.
-
-- name: Restart Kibana
-  lineinfile:
-    path: /etc/kibana/kibana.yml
-    regexp: '#server.name'
-    line: 'server.name: {{ kibana_node_name }}'
-  notify:
-    - Restart Kibana
-
-- name: Set listening ip address.
-  lineinfile:
-    path: /etc/kibana/kibana.yml
-    regexp: '#server.host'
-    line: 'server.host: {{ kibana_node_ip }}'
-  notify:
-    - Restart Kibana
-
-- name: Set url for kibana.
-  lineinfile:
-    path: /etc/kibana/kibana.yml
-    regexp: '#elasticsearch.hosts'
-    line: 'elasticsearch.hosts: ["http://{{ elastic_node_ip }}:{{ elastic_port }}"]'
-  notify:
-    - Restart Kibana
-
 - name: Start Kibana service.
   service:
     name: kibana
+    enabled: true
+    state: started
+
+- name: Start firewalld service.
+  service:
+    name: firewalld
     enabled: true
     state: started
