@@ -6,3 +6,6 @@ elastic_node_ip: '10.91.203.62'
 kibana_node_name: 'kibana'
 kibana_port: '5601'
 kibana_node_ip: '10.91.203.16'
+kibana_rpm_url: "https://artifacts.elastic.co/downloads/kibana/kibana-8.11.1-aarch64.rpm"
+elastic_rpm_url: "https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-8.11.1-aarch64.rpm"
+filebeat_rpm_url: "https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-8.11.1-aarch64.rpm"
