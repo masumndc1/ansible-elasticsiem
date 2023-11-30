@@ -14,7 +14,7 @@
 
 - name: Place extra config file
   template:
-    src: template/suricata_extra.yaml.j2
+    src: templates/suricata_extra.yaml.j2
     dest: /etc/suricata/suricata_extra.yaml
     owner: suricata
     group: suricata
