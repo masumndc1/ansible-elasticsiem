@@ -15,6 +15,7 @@
 - name: deploy suricata
   include_tasks: suricata.yml
   when: "'nids' in group_names"
+  tags: suricata
 
 - name: enable firewall in elastic node and kibana
   include_tasks: firewall.yml
