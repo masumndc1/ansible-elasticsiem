@@ -22,7 +22,7 @@
 - name: Place kibana config file
   template:
     src: templates/kibana.yml.j2
-    dest: /etc/kibana/kibana/yml
+    dest: /etc/kibana/kibana.yml
     owner: root
     group: root
     mode: '0644'
