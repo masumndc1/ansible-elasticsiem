@@ -8,9 +8,13 @@
   include_tasks: kibana.yml
   when: ansible_facts['hostname'] == 'kibana'
 
-- name: deploy filebeats and filebeats
+- name: deploy filebeats
   include_tasks: filebeats.yml
+  when: "'nids' in group_names"
+
+- name: deploy suricata
   include_tasks: suricata.yml
+  when: "'nids' in group_names"
 
 - name: enable firewall in elastic node and kibana
   include_tasks: firewall.yml
