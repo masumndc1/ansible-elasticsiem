@@ -8,6 +8,9 @@
   include_tasks: kibana.yml
   when: ansible_facts['hostname'] == 'kibana'
 
+- name: Generate password
+  include_tasks: pass.yml
+
 - name: deploy filebeats
   include_tasks: filebeat.yml
   when: "'nids' in group_names"
