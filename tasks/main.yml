@@ -9,7 +9,7 @@
   when: ansible_facts['hostname'] == 'kibana'
 
 - name: deploy filebeats
-  include_tasks: filebeats.yml
+  include_tasks: filebeat.yml
   when: "'nids' in group_names"
 
 - name: deploy suricata
