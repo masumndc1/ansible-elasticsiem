@@ -1,30 +1,63 @@
 ---
-- hosts: elasticSiem
-  become: yes
-  gather_facts: false
-  
-  tasks:
-    - name: Add Apt signing key for elasticsearch
-      apt_key:
-        url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
-        state: present
+- name: Add Apt signing key for elasticsearch
+  apt_key:
+    url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+    state: present
+  when: ansible_distribution == 'Ubuntu'
 
-    - name: Populate source list for elastic search
-      apt_repository:
-        repo: deb https://artifacts.elastic.co/packages/7.x/apt stable main
-        state: present
-        filename: elastic-7
+- name: Populate source list for elastic search
+  apt_repository:
+    repo: deb https://artifacts.elastic.co/packages/7.x/apt stable main
+    state: present
+    filename: elastic-7
+  when: ansible_distribution == 'Ubuntu'
 
-    - name: Install openjdk, elasticSearch and kibana
-      apt:
-      #  name: [ "default-jer", "apt-transport-https", "elasticsearch", "kibana" ]
-        name: "{{ item }}"
-        state: present
-        update_cache: yes
-      with_items:
-        - default-jre
-        - apt-transport-https
-        - elasticsearch
-        - kibana
-        - facter
-        - fish
+- name: Install filebeat
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items:
+    - filebeat
+  when: ansible_distribution == 'Ubuntu'
+
+- name: Install firewalld pkgs
+  yum:
+    name: ['epel-release', 'firewalld']
+    state: present
+    update_cache: true
+  when: ansible_distribution == 'CentOS'
+
+- name: Install gpg key for elasticsearch
+  rpm_key:
+    state: present
+    key: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+  when: ansible_distribution == 'CentOS'
+
+- name: Install filebeat pkgs
+  yum:
+    name: "{{ filebeat_rpm_url }}"
+    state: present
+    update_cache: true
+  when: ansible_distribution == 'CentOS'
+
+- name: Set filebeat settings
+  template:
+    src: templates/filebeat.yml.j2
+    dest: /etc/filebeat/filebeat.yml
+    owner: root
+    group: root
+    mode: '0644'
+  when: ansible_distribution == 'CentOS'
+
+- name: Start filebeat service
+  service:
+    name: filebeat
+    enabled: true
+    state: started
+
+- name: Start firewalld service
+  service:
+    name: firewalld
+    enabled: true
+    state: started
