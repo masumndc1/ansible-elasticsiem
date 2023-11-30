@@ -21,3 +21,7 @@
     mode: '0644'
   notify:
     - Restart suricata
+
+- name: Update ruleset for suricata
+  shell:
+    cmd: suricata-update
