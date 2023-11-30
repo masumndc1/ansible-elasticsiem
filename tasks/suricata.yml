@@ -12,13 +12,20 @@
     enabled: true
     state: started
 
-- name: Set config file for suricata
-  template:
-    src: templates/suricata.yaml.j2
-    dest: /etc/suricata/suricata.yaml
-    owner: suricata
-    group: suricata
-    mode: '0640'
+- name: Set community-id to true
+  lineinfile:
+    path: /etc/suricata/suricata.yaml
+    regex: 'community-id: false'
+    line: 'community-id: true'
+  notify:
+    - Restart suricata
+
+- name: Set live rule reloading
+  blockinfile:
+    path: /etc/suricata/suricata.yaml
+    block: |
+     detect-engine:
+       - rule-reload: true
   notify:
     - Restart suricata
 
