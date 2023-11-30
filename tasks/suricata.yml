@@ -20,15 +20,6 @@
   notify:
     - Restart suricata
 
-- name: Set live rule reloading
-  blockinfile:
-    path: /etc/suricata/suricata.yaml
-    block: |
-     detect-engine:
-       - rule-reload: true
-  notify:
-    - Restart suricata
-
 - name: Update ruleset for suricata
   shell:
     cmd: suricata-update
