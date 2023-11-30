@@ -1,0 +1,6 @@
+%YAML 1.1
+---
+community-id: true
+detect-engine:
+    - rule-reload: true
+
