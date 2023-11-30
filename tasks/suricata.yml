@@ -11,3 +11,13 @@
     name: 'suricata'
     enabled: true
     state: started
+
+- name: Set config file for suricata
+  template:
+    src: templates/suricata.yaml.j2
+    dest: /etc/suricata/suricata.yaml
+    owner: root
+    group: root
+    mode: '0644'
+  notify:
+    - Restart suricata
