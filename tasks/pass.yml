@@ -1,0 +1,16 @@
+---
+- name: Generate password for elasticsearch
+  command:
+    cmd: /usr/share/elasticsearch/bin/elasticsearch-setup-passwords auto
+    creates: /home/masum/elastic_passwd
+  register: elasic_pass
+  when: ansible_facts['hostname'] == 'elasticsiem'
+
+- name: Generate password for kibana
+  command:
+    cmd: /usr/share/kibana/bin/kibana-encryption-keys generate -q --force
+    creates: /home/masum/kibana_passwd
+  register: kibana_pass
+  when: ansible_facts['hostname'] == 'kibana'
+
+
