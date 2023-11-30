@@ -16,9 +16,9 @@
   template:
     src: templates/suricata.yaml.j2
     dest: /etc/suricata/suricata.yaml
-    owner: root
-    group: root
-    mode: '0644'
+    owner: suricata
+    group: suricata
+    mode: '0640'
   notify:
     - Restart suricata
 
