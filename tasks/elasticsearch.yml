@@ -23,56 +23,43 @@
     - elasticsearch
   when: ansible_distribution == 'Ubuntu'
 
-- name: set up elastic repo for Centos
+- name: Install firewalld pkgs
+  yum:
+    name: ['epel-release', 'firewalld']
+    state: present
+    update_cache: true
+  when: ansible_distribution == 'CentOS'
+
+- name: Install gpg key for elasticsearch
+  rpm_key:
+    state: present
+    key: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+  when: ansible_distribution == 'CentOS'
+
+- name: Install elasticsearch pkgs
+  yum:
+    name: "{{ elastic_rpm_url }}"
+    state: present
+    update_cache: true
+  when: ansible_distribution == 'CentOS'
+
+- name: Set elasticSearch settings
   template:
-    src: templates/elasticsearch.repo.j2
-    dest: /etc/yum.repos.d/elasticsearch.repo
+    src: templates/elasticsearch.yml.j2
+    dest: /etc/elasticsearch/elasticsearch.yml
     owner: root
     group: root
     mode: '0644'
   when: ansible_distribution == 'CentOS'
 
-- name: Install elasticsearch pkgs in Centos
-  yum:
-    name: ['epel-release', 'firewalld', 'elasticsearch']
-    state: present
-    update_cache: true
-  when: ansible_distribution == 'CentOS'
-
-- name: Start elasticSearch service.
+- name: Start elasticSearch service
   service:
     name: elasticsearch
     enabled: true
     state: started
 
-- name: Set node name in elaslic yml file.
-  lineinfile:
-    path: /etc/elasticsearch/elasticsearch.yml
-    regexp: '^#node.name'
-    line: 'node.name: {{ elastic_node_name }}'
-  notify:
-    - Restart elasticsearch
-
-- name: Set port number in elaslic yml file.
-  lineinfile:
-    path: /etc/elasticsearch/elasticsearch.yml
-    regexp: '#http.port'
-    line: 'http.port: {{ elastic_port }}'
-  notify:
-    - Restart elasticsearch
-
-- name: Set cluster initial master nodes.
-  lineinfile:
-    path: /etc/elasticsearch/elasticsearch.yml
-    regexp: '#cluster.initial_master_nodes'
-    line: 'cluster.initial_master_nodes: node-1'
-  notify:
-    - Restart elasticsearch
-
-- name: Set IP address siem listen to.
-  lineinfile:
-     path: /etc/elasticsearch/elasticsearch.yml
-     regexp: '#network.host'
-     line: 'network.host: {{ elastic_node_ip }}'
-  notify:
-    - Restart elasticsearch
+- name: Start firewalld service
+  service:
+    name: firewalld
+    enabled: true
+    state: started
