@@ -1,38 +1,68 @@
-Role Name
-=========
+# Ansible role to install elasticsearch, kibana, filebeat, auditbeat packets in a cluster.
+------------------------------------------------------------------------------------------
 
-A brief description of the role goes here.
+## How to use this role
+-----------------------
+The hosts inventories may look like following
+```
+[lxds]
+elasticsearch
+kibana
 
-Requirements
-------------
+[nids]
+sys-dev1
+sys-prod1
+```
+## Defaults
+-----------
+You can changes the defaults values of defaults/main.yml file according to.
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
-
-Role Variables
---------------
-
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
-
-Dependencies
-------------
-
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
-
-Example Playbook
+## Example Playbook
 ----------------
+You can add this role to elasticsearch, kibana and network/host intrusion detection systems(nids) by following
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+```
+---
+- hosts: elasticsiem
+  become: yes
+  gather_facts: true
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+  roles:
+    - ansible-elasticsiem
 
-License
+
+- hosts: kibana
+  become: yes
+  gather_facts: true
+
+  roles:
+    - ansible-elasticsiem
+
+- hosts: nids
+  become: yes
+  gather_facts: true
+
+  roles:
+    - ansible-elasticsiem
+```
+
+## Example requirements.yml file
+--------------------------------
+```
+❯ cat requirements.yml
+- src: https://github.com/masumndc1/ansible-elasticsiem.git
+  scm: git
+  path: roles
+  version: master
+```
+
+## Run following
+----------------
+```
+ansible-galaxy role install -f -r requirements.yml -p role
+ansible-playbook -i inventories/hosts elasticsiem.yml
+```
+
+## License
 -------
-
 BSD
-
-Author Information
-------------------
-
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
