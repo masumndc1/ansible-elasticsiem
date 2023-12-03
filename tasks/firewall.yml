@@ -6,7 +6,6 @@
     permanent: true
     immediate: true
     state: enabled
-  when: ansible_facts['hostname'] == 'elasticsiem'
 
 - name: Enable 5601 port forwarding for kibana
   firewalld:
@@ -15,4 +14,3 @@
     permanent: true
     immediate: true
     state: enabled
-  when: ansible_facts['hostname'] == 'kibana'
