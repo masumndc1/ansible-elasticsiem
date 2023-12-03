@@ -1,8 +1,6 @@
 # Ansible role to install elasticsearch, kibana, filebeat, auditbeat packets in a cluster.
-------------------------------------------------------------------------------------------
 
 ## How to use this role
------------------------
 The hosts inventories may look like following
 ```
 [lxds]
@@ -14,14 +12,14 @@ sys-dev1
 sys-prod1
 ```
 ## Defaults
------------
 You can changes the defaults values of defaults/main.yml file according to.
 
 ## Example Playbook
-----------------
 You can add this role to elasticsearch, kibana and network/host intrusion detection systems(nids) by following
 
 ```
+cat elasticsiem.yml
+
 ---
 - hosts: elasticsiem
   become: yes
@@ -47,7 +45,6 @@ You can add this role to elasticsearch, kibana and network/host intrusion detect
 ```
 
 ## Example requirements.yml file
---------------------------------
 ```
 ❯ cat requirements.yml
 - src: https://github.com/masumndc1/ansible-elasticsiem.git
@@ -57,12 +54,13 @@ You can add this role to elasticsearch, kibana and network/host intrusion detect
 ```
 
 ## Run following
-----------------
 ```
 ansible-galaxy role install -f -r requirements.yml -p role
 ansible-playbook -i inventories/hosts elasticsiem.yml
 ```
+## Images
+![host_events](/images/host_events.png)
+![suricata_events](/images/suricata.png)
 
 ## License
--------
 BSD
