@@ -1,4 +1,4 @@
-# Ansible role to install elasticsearch, kibana, filebeat, auditbeat packets in a cluster.
+# Ansible role to install elasticsearch, kibana, filebeat, auditbeat, packetbeat and suricata in a cluster.
 
 ## How to use this role
 The hosts inventories may look like following
