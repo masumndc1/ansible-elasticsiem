@@ -50,13 +50,6 @@
     mode: '0644'
   when: ansible_distribution == 'CentOS'
 
-- name: Enable few services for filebeat
-  shell: |
-    filebeat modules enable system
-    filebeat modules enable auditd
-    filebeat modules enable suricata
-    filebeat setup
-
 - name: Start filebeat service
   service:
     name: filebeat
