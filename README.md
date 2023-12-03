@@ -59,7 +59,7 @@ ansible-galaxy role install -f -r requirements.yml -p role
 ansible-playbook -i inventories/hosts elasticsiem.yml
 ```
 ## Images
-![host_events](/images/host_events.png)
+![host_events](/images/event.png)
 ![suricata_events](/images/suricata.png)
 
 ## License
